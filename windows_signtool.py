@@ -13,4 +13,5 @@ def get_sign_command(
         signtool_path=None,
         arch=None):
     #
-    get_signtool_path(arch)
+    signtool = get_signtool_path(arch) if signtool_path is None else signtool_path
+    return signtool

@@ -50,6 +50,13 @@ class Test_get_sign_command__path_to_signtool(unittest.TestCase):
         #
         self.assertTrue(result.startswith("C:/lablabla/bin/x64/signtool.exe"))
 
+    @mock.patch("windows_signtool.get_signtool_path")
+    def test_signtool_not_found(self, mock_get_signtool_path):
+        mock_get_signtool_path.return_value = None
+        #
+        with self.assertRaises(Exception):
+            windows_signtool.get_sign_command("D:/build/binary.exe")
+
     
 if __name__ == "__main__":
     unittest.main()

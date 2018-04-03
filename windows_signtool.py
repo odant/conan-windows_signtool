@@ -14,4 +14,7 @@ def get_sign_command(
         arch=None):
     #
     signtool = get_signtool_path(arch) if signtool_path is None else signtool_path
+    if signtool is None:
+        raise Exception("signtool.exe not found!")
+    #
     return signtool

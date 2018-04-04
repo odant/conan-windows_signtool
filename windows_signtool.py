@@ -2,6 +2,9 @@
 # Dmitriy Vetutnev, Odant, 2018
 
 
+import platform
+import os
+
 
 # Find signtool.exe
 
@@ -14,8 +17,21 @@ def _sdk10x_bin_path():
 
 
 def get_signtool_path(arch=None):
+    if arch is None:
+        arch = platform.architecture()[0]
+    ms_arch = {
+            "x86": "x86",
+            "32bit": "x86",
+            "x86_64": "x64",
+            "64bit": "x64"
+        }.get(str(arch))
+    #
     _sdk8x_bin_path()
-    pass
+    p = _sdk10x_bin_path()[-1]
+    signtool_path = os.path.join(p, ms_arch, "signtool.exe")
+    res = signtool_path.replace("\\", "/")
+    os.path.exists(res)
+    return res
 
 
 # Generate command line

@@ -53,8 +53,8 @@ def _sha256(timestamp_server):
         res += ["/tr", '"' + timestamp_server + '"']
     res += ["/td", "sha256"]
     return res
-    
-    
+
+
 def get_sign_command(
         file,
         digest_algorithm="sha1",
@@ -85,3 +85,4 @@ def get_sign_command(
         file
     ]
     return " ".join(cmd)
+

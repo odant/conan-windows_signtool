@@ -80,6 +80,46 @@ class Test_get_signtool_path__arch(unittest.TestCase):
         mock_sdk8x_bin_path.assert_called()
         mock_sdk10x_bin_path.assert_called()
         mock_exists.assert_called_with(normal_result)
+
+class Test_get_signtool_path__order(unittest.TestCase):
+
+    @mock.patch("os.path.exists")
+    @mock.patch("windows_signtool._sdk10x_bin_path")
+    @mock.patch("windows_signtool._sdk8x_bin_path")
+    def test_last_sdk10x(self, mock_sdk8x_bin_path, mock_sdk10x_bin_path, mock_exists):
+        mock_sdk8x_bin_path.return_value = [
+            r"C:\Program Files (x86)\Windows Kits\8.0\bin",
+            r"C:\Program Files (x86)\Windows Kits\8.1\bin"
+        ]
+        mock_sdk10x_bin_path.return_value = [
+            r"C:\Program Files (x86)\Windows Kits\10\bin\10.0.15063.0",
+            r"C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0"
+        ]
+        mock_exists.return_value = True
+        #
+        result = windows_signtool.get_signtool_path("x86_64")
+        #
+        normal_result = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x64/signtool.exe"
+        self.assertEqual(result, normal_result)
+
+    @mock.patch("os.path.exists")
+    @mock.patch("windows_signtool._sdk10x_bin_path")
+    @mock.patch("windows_signtool._sdk8x_bin_path")
+    def test_prelast_sdk10x(self, mock_sdk8x_bin_path, mock_sdk10x_bin_path, mock_exists):
+        mock_sdk8x_bin_path.return_value = [
+            r"C:\Program Files (x86)\Windows Kits\8.0\bin",
+            r"C:\Program Files (x86)\Windows Kits\8.1\bin"
+        ]
+        mock_sdk10x_bin_path.return_value = [
+            r"C:\Program Files (x86)\Windows Kits\10\bin\10.0.15063.0",
+            r"C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0"
+        ]
+        mock_exists.side_effect = [False, True]
+        #
+        result = windows_signtool.get_signtool_path("x86_64")
+        #
+        normal_result = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.15063.0/x64/signtool.exe"
+        self.assertEqual(result, normal_result)
         
 
 if __name__ == "__main__":

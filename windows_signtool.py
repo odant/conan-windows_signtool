@@ -17,4 +17,16 @@ def get_sign_command(
     if signtool is None:
         raise Exception("signtool.exe not found!")
     #
-    return signtool
+    cmd = [
+        signtool,
+        "sign",
+        "/a",
+        "/fd", digest_algorithm,
+    ]
+    if not timestamp_server is None:
+        cmd += ["/t", '"' + timestamp_server + '"']
+    cmd += [
+        "/v",
+        file
+    ]
+    return " ".join(cmd)

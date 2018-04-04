@@ -3,7 +3,11 @@
 
 
 import unittest
-import mock as mock
+import sys
+if sys.version.startswith("2"):
+    import mock as mock
+else:
+    import unittest.mock as mock
 
 
 import os
@@ -25,8 +29,8 @@ class Test_get_signtool_path__arch(unittest.TestCase):
         #
         normal_result = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x86/signtool.exe"
         self.assertEqual(result, normal_result)
-        mock_sdk8x_bin_path.assert_called()
-        mock_sdk10x_bin_path.assert_called()
+        mock_sdk8x_bin_path.assert_called_with()
+        mock_sdk10x_bin_path.assert_called_with()
         mock_exists.assert_called_with(normal_result)
 
     @mock.patch("os.path.exists")
@@ -41,8 +45,8 @@ class Test_get_signtool_path__arch(unittest.TestCase):
         #
         normal_result = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x64/signtool.exe"
         self.assertEqual(result, normal_result)
-        mock_sdk8x_bin_path.assert_called()
-        mock_sdk10x_bin_path.assert_called()
+        mock_sdk8x_bin_path.assert_called_with()
+        mock_sdk10x_bin_path.assert_called_with()
         mock_exists.assert_called_with(normal_result)
 
     @mock.patch("platform.architecture")
@@ -59,8 +63,8 @@ class Test_get_signtool_path__arch(unittest.TestCase):
         #
         normal_result = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x86/signtool.exe"
         self.assertEqual(result, normal_result)
-        mock_sdk8x_bin_path.assert_called()
-        mock_sdk10x_bin_path.assert_called()
+        mock_sdk8x_bin_path.assert_called_with()
+        mock_sdk10x_bin_path.assert_called_with()
         mock_exists.assert_called_with(normal_result)
 
     @mock.patch("platform.architecture")
@@ -77,8 +81,8 @@ class Test_get_signtool_path__arch(unittest.TestCase):
         #
         normal_result = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x64/signtool.exe"
         self.assertEqual(result, normal_result)
-        mock_sdk8x_bin_path.assert_called()
-        mock_sdk10x_bin_path.assert_called()
+        mock_sdk8x_bin_path.assert_called_with()
+        mock_sdk10x_bin_path.assert_called_with()
         mock_exists.assert_called_with(normal_result)
 
 class Test_get_signtool_path__order(unittest.TestCase):

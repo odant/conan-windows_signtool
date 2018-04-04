@@ -3,7 +3,11 @@
 
 
 import unittest
-import mock as mock
+import sys
+if sys.version.startswith("2"):
+    import mock as mock
+else:
+    import unittest.mock as mock
 
 
 import windows_signtool

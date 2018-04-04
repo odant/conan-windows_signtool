@@ -26,12 +26,16 @@ def get_signtool_path(arch=None):
             "64bit": "x64"
         }.get(str(arch))
     #
-    _sdk8x_bin_path()
-    p = _sdk10x_bin_path()[-1]
-    signtool_path = os.path.join(p, ms_arch, "signtool.exe")
-    res = signtool_path.replace("\\", "/")
-    os.path.exists(res)
-    return res
+    paths = []
+    paths += _sdk8x_bin_path()
+    paths += _sdk10x_bin_path()
+    paths.reverse()
+    for p in paths:
+        signtool_path = os.path.join(p, ms_arch, "signtool.exe")
+        res = signtool_path.replace("\\", "/")
+        if os.path.exists(res):
+            return res
+    return None
 
 
 # Generate command line

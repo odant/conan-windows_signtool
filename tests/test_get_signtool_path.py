@@ -4,6 +4,7 @@
 
 import unittest
 import sys
+# Support Python 2.x and 3.x
 if sys.version.startswith("2"):
     import mock as mock
 else:
@@ -116,7 +117,75 @@ class Test_get_signtool_path__order(unittest.TestCase):
         #
         normal_result = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.15063.0/x64/signtool.exe"
         self.assertEqual(result, normal_result)
-        
+
+    @mock.patch("os.path.exists")
+    @mock.patch("windows_signtool._sdk10x_bin_path")
+    @mock.patch("windows_signtool._sdk8x_bin_path")
+    def test_last_sdk8x(self, mock_sdk8x_bin_path, mock_sdk10x_bin_path, mock_exists):
+        mock_sdk8x_bin_path.return_value = [
+            r"C:\Program Files (x86)\Windows Kits\8.0\bin",
+            r"C:\Program Files (x86)\Windows Kits\8.1\bin"
+        ]
+        mock_sdk10x_bin_path.return_value = [
+            r"C:\Program Files (x86)\Windows Kits\10\bin\10.0.15063.0",
+            r"C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0"
+        ]
+        mock_exists.side_effect = [False, False, True]
+        #
+        result = windows_signtool.get_signtool_path("x86_64")
+        #
+        normal_result = "C:/Program Files (x86)/Windows Kits/8.1/bin/x64/signtool.exe"
+        self.assertEqual(result, normal_result)
+
+    @mock.patch("os.path.exists")
+    @mock.patch("windows_signtool._sdk10x_bin_path")
+    @mock.patch("windows_signtool._sdk8x_bin_path")
+    def test_prelast_sdk8x(self, mock_sdk8x_bin_path, mock_sdk10x_bin_path, mock_exists):
+        mock_sdk8x_bin_path.return_value = [
+            r"C:\Program Files (x86)\Windows Kits\8.0\bin",
+            r"C:\Program Files (x86)\Windows Kits\8.1\bin"
+        ]
+        mock_sdk10x_bin_path.return_value = [
+            r"C:\Program Files (x86)\Windows Kits\10\bin\10.0.15063.0",
+            r"C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0"
+        ]
+        mock_exists.side_effect = [False, False, False, True]
+        #
+        result = windows_signtool.get_signtool_path("x86_64")
+        #
+        normal_result = "C:/Program Files (x86)/Windows Kits/8.0/bin/x64/signtool.exe"
+        self.assertEqual(result, normal_result)
+
+    @mock.patch("os.path.exists")
+    @mock.patch("windows_signtool._sdk10x_bin_path")
+    @mock.patch("windows_signtool._sdk8x_bin_path")
+    def test_not_found_signtool(self, mock_sdk8x_bin_path, mock_sdk10x_bin_path, mock_exists):
+        mock_sdk8x_bin_path.return_value = [
+            r"C:\Program Files (x86)\Windows Kits\8.0\bin",
+            r"C:\Program Files (x86)\Windows Kits\8.1\bin"
+        ]
+        mock_sdk10x_bin_path.return_value = [
+            r"C:\Program Files (x86)\Windows Kits\10\bin\10.0.15063.0",
+            r"C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0"
+        ]
+        mock_exists.return_value = False
+        #
+        result = windows_signtool.get_signtool_path("x86_64")
+        #
+        self.assertIsNone(result)
+
+    @mock.patch("os.path.exists")
+    @mock.patch("windows_signtool._sdk10x_bin_path")
+    @mock.patch("windows_signtool._sdk8x_bin_path")
+    def test_miss_sdk(self, mock_sdk8x_bin_path, mock_sdk10x_bin_path, mock_exists):
+        mock_sdk8x_bin_path.return_value = []
+        mock_sdk10x_bin_path.return_value = []
+        mock_exists.return_value = False
+        #
+        result = windows_signtool.get_signtool_path("x86_64")
+        #
+        self.assertIsNone(result)
+
 
 if __name__ == "__main__":
     unittest.main()

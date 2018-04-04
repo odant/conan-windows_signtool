@@ -4,6 +4,7 @@
 
 import unittest
 import sys
+# Support Python 2.x and 3.x
 if sys.version.startswith("2"):
     import mock as mock
 else:

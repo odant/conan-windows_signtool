@@ -71,6 +71,7 @@ class Test_get_sign_command__sha1(unittest.TestCase):
             "C:/blablabla/bin/x64/signtool.exe",
             "sign",
             "/a",
+            "/as",
             "/fd", "sha1",
             "/t", "\"http://timestamp.verisign.com/scripts/timestamp.dll\"",
             "/v",
@@ -89,6 +90,7 @@ class Test_get_sign_command__sha1(unittest.TestCase):
             "C:/blablabla/bin/x64/signtool.exe",
             "sign",
             "/a",
+            "/as",
             "/fd", "sha1",
             "/t", "\"http://timestamp.verisign.com/scripts/timestamp.dll\"",
             "/v",
@@ -107,6 +109,7 @@ class Test_get_sign_command__sha1(unittest.TestCase):
             "C:/blablabla/bin/x64/signtool.exe",
             "sign",
             "/a",
+            "/as",
             "/fd", "sha1",
             "/t", "\"http://custom_server.org/timestamp\"",
             "/v",
@@ -125,12 +128,13 @@ class Test_get_sign_command__sha1(unittest.TestCase):
             "C:/blablabla/bin/x64/signtool.exe",
             "sign",
             "/a",
+            "/as",
             "/fd", "sha1",
             "/v",
             "D:/build/binary.exe"
         ]
         self.assertEqual(result, normal_result)
 
-        
+
 if __name__ == "__main__":
     unittest.main()

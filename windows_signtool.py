@@ -21,6 +21,7 @@ def get_sign_command(
         signtool,
         "sign",
         "/a",
+        "/as",
         "/fd", digest_algorithm,
     ]
     if not timestamp_server is None:

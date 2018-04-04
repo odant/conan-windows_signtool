@@ -1,3 +1,7 @@
+# Module for find signtool.exe and generate sign command
+# Dmitriy Vetutnev, Odant, 2018
+
+
 import unittest
 import mock as mock
 

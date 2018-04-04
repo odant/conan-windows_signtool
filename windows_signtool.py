@@ -2,9 +2,23 @@
 # Dmitriy Vetutnev, Odant, 2018
 
 
-def get_signtool_path(arch=None):
+
+# Find signtool.exe
+
+def _sdk8x_bin_path():
     pass
 
+
+def _sdk10x_bin_path():
+    pass
+
+
+def get_signtool_path(arch=None):
+    _sdk8x_bin_path()
+    pass
+
+
+# Generate command line
 
 def _sha1(timestamp_server):
     res = ["/fd", "sha1"]

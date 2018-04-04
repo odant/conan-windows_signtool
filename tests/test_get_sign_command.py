@@ -136,5 +136,77 @@ class Test_get_sign_command__sha1(unittest.TestCase):
         self.assertEqual(result, normal_result)
 
 
+class Test_get_sign_command__sha256(unittest.TestCase):
+
+    @mock.patch("windows_signtool.get_signtool_path")
+    def test_simple(self, mock_get_signtool_path):
+        mock_get_signtool_path.return_value = "C:/blablabla/bin/x64/signtool.exe"
+        #
+        cmd = windows_signtool.get_sign_command("D:/build/binary.exe", digest_algorithm="sha256")
+        #
+        result = cmd.split()
+        normal_result = [
+            "C:/blablabla/bin/x64/signtool.exe",
+            "sign",
+            "/a",
+            "/as",
+            "/fd", "sha256",
+            "/tr", "\"http://timestamp.verisign.com/scripts/timestamp.dll\"",
+            "/td", "sha256",
+            "/v",
+            "D:/build/binary.exe"
+        ]
+        self.assertEqual(result, normal_result)
+
+    @mock.patch("windows_signtool.get_signtool_path")
+    def test_custom_timestamp_server(self, mock_get_signtool_path):
+        mock_get_signtool_path.return_value = "C:/blablabla/bin/x64/signtool.exe"
+        #
+        cmd = windows_signtool.get_sign_command("D:/build/binary.exe", digest_algorithm="sha256", timestamp_server="http://custom_server.org/timestamp")
+        #
+        result = cmd.split()
+        normal_result = [
+            "C:/blablabla/bin/x64/signtool.exe",
+            "sign",
+            "/a",
+            "/as",
+            "/fd", "sha256",
+            "/tr", "\"http://custom_server.org/timestamp\"",
+            "/td", "sha256",
+            "/v",
+            "D:/build/binary.exe"
+        ]
+        self.assertEqual(result, normal_result)
+
+    @mock.patch("windows_signtool.get_signtool_path")
+    def test_without_timestamp(self, mock_get_signtool_path):
+        mock_get_signtool_path.return_value = "C:/blablabla/bin/x64/signtool.exe"
+        #
+        cmd = windows_signtool.get_sign_command("D:/build/binary.exe", digest_algorithm="sha256", timestamp_server=None)
+        #
+        result = cmd.split()
+        normal_result = [
+            "C:/blablabla/bin/x64/signtool.exe",
+            "sign",
+            "/a",
+            "/as",
+            "/fd", "sha256",
+            "/td", "sha256",
+            "/v",
+            "D:/build/binary.exe"
+        ]
+        self.assertEqual(result, normal_result)
+
+
+class Test_get_sign_command__unknow_digest_algorithm(unittest.TestCase):
+
+    @mock.patch("windows_signtool.get_signtool_path")
+    def test_simple(self, mock_get_signtool_path):
+        mock_get_signtool_path.return_value = "C:/blablabla/bin/x64/signtool.exe"
+        #
+        with self.assertRaises(Exception):
+            windows_signtool.get_sign_command("D:/build/binary.exe", digest_algorithm="bad_algorithm")
+        
+
 if __name__ == "__main__":
     unittest.main()

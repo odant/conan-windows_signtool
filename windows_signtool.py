@@ -6,6 +6,21 @@ def get_signtool_path(arch=None):
     pass
 
 
+def _sha1(timestamp_server):
+    res = ["/fd", "sha1"]
+    if not timestamp_server is None:
+        res += ["/t", '"' + timestamp_server + '"']
+    return res
+
+
+def _sha256(timestamp_server):
+    res = ["/fd", "sha256"]
+    if not timestamp_server is None:
+        res += ["/tr", '"' + timestamp_server + '"']
+    res += ["/td", "sha256"]
+    return res
+    
+    
 def get_sign_command(
         file,
         digest_algorithm="sha1",
@@ -21,11 +36,16 @@ def get_sign_command(
         signtool,
         "sign",
         "/a",
-        "/as",
-        "/fd", digest_algorithm,
+        "/as"
     ]
-    if not timestamp_server is None:
-        cmd += ["/t", '"' + timestamp_server + '"']
+    #
+    if digest_algorithm == "sha1":
+        cmd += _sha1(timestamp_server)
+    elif digest_algorithm == "sha256":
+        cmd += _sha256(timestamp_server)
+    else:
+        raise Exception("Invalid digest algorithm!")
+    #
     cmd += [
         "/v",
         file

@@ -13,11 +13,19 @@ class Test_get_sdk8x_bin_paths(unittest.TestCase):
 
     @unittest.skipIf(platform.system() != "Windows", "only Windows support")
     def test_sdk_80(self):
-        print("\nSDK 8.0 path:\n%s" % windows_signtool.get_sdk8x_bin_paths(reg_keys=["KitsRoot"])[0])
+        paths = windows_signtool.get_sdk8x_bin_paths(reg_keys=["KitsRoot"])
+        if not paths:
+            print("\nSDK 8.0 not found")
+        else:
+            print("\nSDK 8.0 path:\n%s" % paths[0])
 
     @unittest.skipIf(platform.system() != "Windows", "only Windows support")
     def test_sdk_81(self):
-        print("\nSDK 8.1 path:\n%s" % windows_signtool.get_sdk8x_bin_paths(reg_keys=["KitsRoot81"])[0])
+        paths = windows_signtool.get_sdk8x_bin_paths(reg_keys=["KitsRoot81"])
+        if not paths:
+            print("\nSDK 8.1 not found")
+        else:
+            print("\nSDK 8.1 path:\n%s" % paths[0])
 
     @unittest.skipIf(platform.system() != "Windows", "only Windows support")
     def test_all_sdk(self):

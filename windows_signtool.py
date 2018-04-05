@@ -25,8 +25,23 @@ def get_sdk8x_bin_paths(reg_keys=None, reg_path="Software\\Microsoft\\Windows Ki
     return ret
 
 
-def get_sdk10x_bin_paths():
-    return []
+def get_sdk10x_bin_paths(reg_key="KitsRoot10", reg_path="Software\\Microsoft\\Windows Kits\\Installed Roots"):
+    ret = []
+    try:
+        hk = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, reg_path)
+        p10 = winreg.QueryValueEx(hk, reg_key)[0]
+        i = 0
+        while True:
+            try:
+                ver = winreg.EnumKey(hk, i)
+                p = os.path.join(p10, "bin", ver)
+                ret.append(p)
+                i += 1
+            except:
+                break
+    except:
+        pass
+    return ret
 
 
 def get_signtool_path(arch=None):
@@ -98,4 +113,3 @@ def get_sign_command(
         file
     ]
     return " ".join(cmd)
-

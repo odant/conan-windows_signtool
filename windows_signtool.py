@@ -4,12 +4,25 @@
 
 import platform
 import os
+if platform.system() == "Windows":
+    import winreg
 
 
 # Find signtool.exe
 
-def get_sdk8x_bin_paths():
-    return []
+def get_sdk8x_bin_paths(reg_keys=None, reg_path="Software\\Microsoft\\Windows Kits\\Installed Roots"):
+    if reg_keys is None:
+        reg_keys = ["KitsRoot", "KitsRoot81"]
+    ret = []
+    hk = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, reg_path)
+    for key in reg_keys:
+        try:
+            p = winreg.QueryValueEx(hk, key)[0]
+            p = os.path.join(p, "bin")
+            ret.append(p)
+        except WindowsError:
+            continue
+    return ret
 
 
 def get_sdk10x_bin_paths():

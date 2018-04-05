@@ -61,9 +61,9 @@ def get_signtool_path(arch=None):
     for p in paths:
         signtool_path = os.path.join(p, ms_arch, "signtool.exe")
         res = signtool_path.replace("\\", "/")
-        if res.count(" ") > 0:
-            res = "\"" + res + "\""
         if os.path.exists(res):
+            if res.count(" ") > 0:
+                res = "\"" + res + "\""
             return res
     return None
 

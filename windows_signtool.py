@@ -73,14 +73,17 @@ def get_signtool_path(arch=None):
 def _sha1(timestamp_server):
     res = ["/fd", "sha1"]
     if not timestamp_server is None:
-        res += ["/t", '"' + timestamp_server + '"']
+        res += ["/t", timestamp_server]
     return res
 
 
 def _sha256(timestamp_server):
-    res = ["/fd", "sha256"]
+    res = [
+        "/as",
+        "/fd", "sha256"
+    ]
     if not timestamp_server is None:
-        res += ["/tr", '"' + timestamp_server + '"']
+        res += ["/tr", timestamp_server]
     res += ["/td", "sha256"]
     return res
 
@@ -88,7 +91,9 @@ def _sha256(timestamp_server):
 def get_sign_command(
         file,
         digest_algorithm="sha1",
-        timestamp_server="http://timestamp.verisign.com/scripts/timestamp.dll",
+        timestamp=True,
+        timestamp_server_sha1="http://timestamp.verisign.com/scripts/timestamp.dll",
+        timestamp_server_sha256="http://sha256timestamp.ws.symantec.com/sha256/timestamp",
         signtool_path=None,
         arch=None):
     #
@@ -99,19 +104,21 @@ def get_sign_command(
     cmd = [
         signtool,
         "sign",
-        "/a",
-        "/as"
+        "/a"
     ]
     #
     if digest_algorithm == "sha1":
-        cmd += _sha1(timestamp_server)
+        ts = timestamp_server_sha1 if timestamp else None
+        cmd += _sha1(ts)
     elif digest_algorithm == "sha256":
-        cmd += _sha256(timestamp_server)
+        ts = timestamp_server_sha256 if timestamp else None
+        cmd += _sha256(ts)
     else:
         raise Exception("Invalid digest algorithm!")
     #
     cmd += [
         "/v",
+        "/debug",
         file
     ]
     return " ".join(cmd)

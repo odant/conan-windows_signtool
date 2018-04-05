@@ -80,10 +80,10 @@ class Test_get_sign_command__sha1(unittest.TestCase):
             "C:/blablabla/bin/x64/signtool.exe",
             "sign",
             "/a",
-            "/as",
             "/fd", "sha1",
-            "/t", "\"http://timestamp.verisign.com/scripts/timestamp.dll\"",
+            "/t", "http://timestamp.verisign.com/scripts/timestamp.dll",
             "/v",
+            "/debug",
             "D:/build/binary.exe"
         ]
         self.assertEqual(result, normal_result)
@@ -99,10 +99,10 @@ class Test_get_sign_command__sha1(unittest.TestCase):
             "C:/blablabla/bin/x64/signtool.exe",
             "sign",
             "/a",
-            "/as",
             "/fd", "sha1",
-            "/t", "\"http://timestamp.verisign.com/scripts/timestamp.dll\"",
+            "/t", "http://timestamp.verisign.com/scripts/timestamp.dll",
             "/v",
+            "/debug",
             "D:/build/binary.exe"
         ]
         self.assertEqual(result, normal_result)
@@ -111,17 +111,17 @@ class Test_get_sign_command__sha1(unittest.TestCase):
     def test_custom_timestamp_server(self, mock_get_signtool_path):
         mock_get_signtool_path.return_value = "C:/blablabla/bin/x64/signtool.exe"
         #
-        cmd = windows_signtool.get_sign_command("D:/build/binary.exe", digest_algorithm="sha1", timestamp_server="http://custom_server.org/timestamp")
+        cmd = windows_signtool.get_sign_command("D:/build/binary.exe", digest_algorithm="sha1", timestamp_server_sha1="http://custom_server.org/timestamp")
         #
         result = cmd.split()
         normal_result = [
             "C:/blablabla/bin/x64/signtool.exe",
             "sign",
             "/a",
-            "/as",
             "/fd", "sha1",
-            "/t", "\"http://custom_server.org/timestamp\"",
+            "/t", "http://custom_server.org/timestamp",
             "/v",
+            "/debug",
             "D:/build/binary.exe"
         ]
         self.assertEqual(result, normal_result)
@@ -130,16 +130,16 @@ class Test_get_sign_command__sha1(unittest.TestCase):
     def test_without_timestamp(self, mock_get_signtool_path):
         mock_get_signtool_path.return_value = "C:/blablabla/bin/x64/signtool.exe"
         #
-        cmd = windows_signtool.get_sign_command("D:/build/binary.exe", digest_algorithm="sha1", timestamp_server=None)
+        cmd = windows_signtool.get_sign_command("D:/build/binary.exe", digest_algorithm="sha1", timestamp=False)
         #
         result = cmd.split()
         normal_result = [
             "C:/blablabla/bin/x64/signtool.exe",
             "sign",
             "/a",
-            "/as",
             "/fd", "sha1",
             "/v",
+            "/debug",
             "D:/build/binary.exe"
         ]
         self.assertEqual(result, normal_result)
@@ -160,9 +160,10 @@ class Test_get_sign_command__sha256(unittest.TestCase):
             "/a",
             "/as",
             "/fd", "sha256",
-            "/tr", "\"http://timestamp.verisign.com/scripts/timestamp.dll\"",
+            "/tr", "http://sha256timestamp.ws.symantec.com/sha256/timestamp",
             "/td", "sha256",
             "/v",
+            "/debug",
             "D:/build/binary.exe"
         ]
         self.assertEqual(result, normal_result)
@@ -171,7 +172,7 @@ class Test_get_sign_command__sha256(unittest.TestCase):
     def test_custom_timestamp_server(self, mock_get_signtool_path):
         mock_get_signtool_path.return_value = "C:/blablabla/bin/x64/signtool.exe"
         #
-        cmd = windows_signtool.get_sign_command("D:/build/binary.exe", digest_algorithm="sha256", timestamp_server="http://custom_server.org/timestamp")
+        cmd = windows_signtool.get_sign_command("D:/build/binary.exe", digest_algorithm="sha256", timestamp_server_sha256="http://custom_server.org/timestamp")
         #
         result = cmd.split()
         normal_result = [
@@ -180,9 +181,10 @@ class Test_get_sign_command__sha256(unittest.TestCase):
             "/a",
             "/as",
             "/fd", "sha256",
-            "/tr", "\"http://custom_server.org/timestamp\"",
+            "/tr", "http://custom_server.org/timestamp",
             "/td", "sha256",
             "/v",
+            "/debug",
             "D:/build/binary.exe"
         ]
         self.assertEqual(result, normal_result)
@@ -191,7 +193,7 @@ class Test_get_sign_command__sha256(unittest.TestCase):
     def test_without_timestamp(self, mock_get_signtool_path):
         mock_get_signtool_path.return_value = "C:/blablabla/bin/x64/signtool.exe"
         #
-        cmd = windows_signtool.get_sign_command("D:/build/binary.exe", digest_algorithm="sha256", timestamp_server=None)
+        cmd = windows_signtool.get_sign_command("D:/build/binary.exe", digest_algorithm="sha256", timestamp=False)
         #
         result = cmd.split()
         normal_result = [
@@ -202,6 +204,7 @@ class Test_get_sign_command__sha256(unittest.TestCase):
             "/fd", "sha256",
             "/td", "sha256",
             "/v",
+            "/debug",
             "D:/build/binary.exe"
         ]
         self.assertEqual(result, normal_result)

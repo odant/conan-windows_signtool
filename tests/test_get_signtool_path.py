@@ -28,7 +28,7 @@ class Test_get_signtool_path__arch(unittest.TestCase):
         #
         result = windows_signtool.get_signtool_path("x86")
         #
-        normal_result = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x86/signtool.exe"
+        normal_result = "\"C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x86/signtool.exe\""
         self.assertEqual(result, normal_result)
         mock_exists.assert_called_with(normal_result)
 
@@ -42,7 +42,7 @@ class Test_get_signtool_path__arch(unittest.TestCase):
         #
         result = windows_signtool.get_signtool_path("x86_64")
         #
-        normal_result = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x64/signtool.exe"
+        normal_result = "\"C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x64/signtool.exe\""
         self.assertEqual(result, normal_result)
         mock_exists.assert_called_with(normal_result)
 
@@ -58,7 +58,7 @@ class Test_get_signtool_path__arch(unittest.TestCase):
         #
         result = windows_signtool.get_signtool_path()
         #
-        normal_result = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x86/signtool.exe"
+        normal_result = "\"C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x86/signtool.exe\""
         self.assertEqual(result, normal_result)
         mock_exists.assert_called_with(normal_result)
 
@@ -74,7 +74,7 @@ class Test_get_signtool_path__arch(unittest.TestCase):
         #
         result = windows_signtool.get_signtool_path()
         #
-        normal_result = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x64/signtool.exe"
+        normal_result = "\"C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x64/signtool.exe\""
         self.assertEqual(result, normal_result)
         mock_exists.assert_called_with(normal_result)
 
@@ -96,7 +96,7 @@ class Test_get_signtool_path__order(unittest.TestCase):
         #
         result = windows_signtool.get_signtool_path("x86_64")
         #
-        normal_result = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x64/signtool.exe"
+        normal_result = "\"C:/Program Files (x86)/Windows Kits/10/bin/10.0.16299.0/x64/signtool.exe\""
         self.assertEqual(result, normal_result)
 
     @mock.patch("os.path.exists")
@@ -115,7 +115,7 @@ class Test_get_signtool_path__order(unittest.TestCase):
         #
         result = windows_signtool.get_signtool_path("x86_64")
         #
-        normal_result = "C:/Program Files (x86)/Windows Kits/10/bin/10.0.15063.0/x64/signtool.exe"
+        normal_result = "\"C:/Program Files (x86)/Windows Kits/10/bin/10.0.15063.0/x64/signtool.exe\""
         self.assertEqual(result, normal_result)
 
     @mock.patch("os.path.exists")
@@ -134,7 +134,7 @@ class Test_get_signtool_path__order(unittest.TestCase):
         #
         result = windows_signtool.get_signtool_path("x86_64")
         #
-        normal_result = "C:/Program Files (x86)/Windows Kits/8.1/bin/x64/signtool.exe"
+        normal_result = "\"C:/Program Files (x86)/Windows Kits/8.1/bin/x64/signtool.exe\""
         self.assertEqual(result, normal_result)
 
     @mock.patch("os.path.exists")
@@ -153,7 +153,7 @@ class Test_get_signtool_path__order(unittest.TestCase):
         #
         result = windows_signtool.get_signtool_path("x86_64")
         #
-        normal_result = "C:/Program Files (x86)/Windows Kits/8.0/bin/x64/signtool.exe"
+        normal_result = "\"C:/Program Files (x86)/Windows Kits/8.0/bin/x64/signtool.exe\""
         self.assertEqual(result, normal_result)
 
     @mock.patch("os.path.exists")

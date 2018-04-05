@@ -8,12 +8,12 @@ import os
 
 # Find signtool.exe
 
-def _sdk8x_bin_path():
-    pass
+def get_sdk8x_bin_paths():
+    return []
 
 
-def _sdk10x_bin_path():
-    pass
+def get_sdk10x_bin_paths():
+    return []
 
 
 def get_signtool_path(arch=None):
@@ -27,8 +27,8 @@ def get_signtool_path(arch=None):
         }.get(str(arch))
     #
     paths = []
-    paths += _sdk8x_bin_path()
-    paths += _sdk10x_bin_path()
+    paths += get_sdk8x_bin_paths()
+    paths += get_sdk10x_bin_paths()
     paths.reverse()
     for p in paths:
         signtool_path = os.path.join(p, ms_arch, "signtool.exe")

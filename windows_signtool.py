@@ -73,7 +73,8 @@ def get_signtool_path(arch=None):
 def _sha1(timestamp_server):
     res = ["/fd", "sha1"]
     if not timestamp_server is None:
-        res += ["/t", timestamp_server]
+        res += ["/tr", timestamp_server]
+        res += ["/td", "sha1"]
     return res
 
 
@@ -84,7 +85,7 @@ def _sha256(timestamp_server):
     ]
     if not timestamp_server is None:
         res += ["/tr", timestamp_server]
-    res += ["/td", "sha256"]
+        res += ["/td", "sha256"]
     return res
 
 
@@ -92,7 +93,7 @@ def get_sign_command(
         file,
         digest_algorithm="sha1",
         timestamp=True,
-        timestamp_server_sha1="http://timestamp.verisign.com/scripts/timestamp.dll",
+        timestamp_server_sha1="http://sha1timestamp.ws.symantec.com/sha1/timestamp",
         timestamp_server_sha256="http://sha256timestamp.ws.symantec.com/sha256/timestamp",
         signtool_path=None,
         arch=None):

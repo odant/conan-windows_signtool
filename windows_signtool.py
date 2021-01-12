@@ -93,8 +93,8 @@ def get_sign_command(
         file,
         digest_algorithm="sha1",
         timestamp=True,
-        timestamp_server_sha1="http://sha1timestamp.ws.symantec.com/sha1/timestamp",
-        timestamp_server_sha256="http://sha256timestamp.ws.symantec.com/sha256/timestamp",
+        timestamp_server_sha1="http://timestamp.digicert.com",
+        timestamp_server_sha256="http://timestamp.digicert.com",
         signtool_path=None,
         arch=None):
     #
